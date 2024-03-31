@@ -1,8 +1,6 @@
 "use client";
 import axios, { Method } from "axios";
-// import request from "./request";
 import endpoints from "./endpoints";
-import { getToken } from "./auth";
 import request from "./request";
 
 export interface IApiResponse<T = {}> {

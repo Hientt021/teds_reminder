@@ -6,6 +6,10 @@ import { Button, Stack, TextField } from "@mui/material";
 import { useEffect } from "react";
 import api from "@/api";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/store";
+import { appActions } from "@/store/features/appSlice";
+import { useDispatch } from "react-redux";
+import useToast from "@/hook/toast/useToast";
 
 export interface ILoginFormProps {}
 
@@ -14,13 +18,25 @@ export interface ILoginProps {
   password: string;
 }
 
+export interface IUser {
+  email: string;
+  userName: string;
+  created_at: string;
+  updated_at: string;
+  _id: string;
+}
+
 export interface ILoginRes {
+  user: IUser;
   accessToken: string;
   refreshToken: string;
 }
 
 export default function LoginForm(props: ILoginFormProps) {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const toast = useToast();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -29,12 +45,9 @@ export default function LoginForm(props: ILoginFormProps) {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       try {
-        const res = await api.login<ILoginRes>(values);
-        if (res) {
-          localStorage.setItem("TOKEN", res.accessToken);
-          localStorage.setItem("REFRESH_TOKEN", res.refreshToken);
-          router.push("/dashboard");
-        }
+        await dispatch(appActions.emailLogin(values));
+        toast("Logged in successfully", "success");
+        router.push("/dashboard");
       } catch (e) {
         alert(e);
       }

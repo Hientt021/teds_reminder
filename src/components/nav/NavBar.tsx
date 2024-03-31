@@ -1,7 +1,5 @@
-import * as React from "react";
-import Logo from "./Logo";
-import SettingsIcon from "@mui/icons-material/Settings";
-import PersonIcon from "@mui/icons-material/Person";
+import { useAppSelector } from "@/store";
+import UserDropdown from "../dropdown/UserDropdown";
 export interface INavBarProps {}
 
 export default function NavBar(props: INavBarProps) {
@@ -9,8 +7,7 @@ export default function NavBar(props: INavBarProps) {
     <div className="flex justify-between w-full items-center p-5 shadow-lg">
       <div></div>
       <div className="flex gap-3">
-        <SettingsIcon />
-        <PersonIcon />
+        <UserDropdown />
       </div>
     </div>
   );
