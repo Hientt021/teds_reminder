@@ -1,5 +1,6 @@
 import {
   Box,
+  Divider,
   IconButton,
   ListItemIcon,
   Menu,
@@ -24,6 +25,7 @@ interface IDropdown {
   closeAfterChange?: boolean;
   sx?: SxProps<Theme>;
   header?: React.ReactNode;
+  disableRipple?: boolean;
 }
 
 export interface IOption {
@@ -42,6 +44,7 @@ export default function Dropdown(props: IDropdown) {
     closeAfterChange = true,
     sx,
     header,
+    disableRipple = false,
   } = props;
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
   const open = Boolean(anchor);
@@ -58,8 +61,12 @@ export default function Dropdown(props: IDropdown) {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <Box sx={sx}>
+          {header && (
+            <Box>
+              {header} <Divider />
+            </Box>
+          )}
           <MenuList>
-            {header}
             {options.map((el, i) => (
               <MenuItem
                 onClick={(e: any) => {
@@ -71,9 +78,10 @@ export default function Dropdown(props: IDropdown) {
                 key={i}
                 value={el.value}
                 sx={{ py: 1 }}
+                className="flex items-center"
               >
                 <ListItemIcon>{el?.icon}</ListItemIcon>
-                <Typography>{el.label}</Typography>
+                <Typography variant="inherit">{el.label}</Typography>
               </MenuItem>
             ))}
           </MenuList>
@@ -81,7 +89,12 @@ export default function Dropdown(props: IDropdown) {
       </Menu>
 
       <Tooltip title={label}>
-        <IconButton onClick={onOpen} size="small" sx={{ ml: 2 }}>
+        <IconButton
+          disableRipple={disableRipple}
+          onClick={onOpen}
+          size="small"
+          sx={{ ml: 2 }}
+        >
           {icon}
           {children}
         </IconButton>

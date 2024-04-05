@@ -1,34 +1,45 @@
 "use client";
-import { routes } from "@/routes/const";
-import { useAppDispatch } from "@/store";
+import MainLoader from "@/components/loader/MainLoader";
+import { ROUTES, routes } from "@/routes/const";
+import { useAppDispatch, useAppSelector } from "@/store";
 import { appActions } from "@/store/features/appSlice";
 import { getAccessToken, getValidToken } from "@/utils/auth";
+import { toast } from "@/utils/toast";
 import { redirect, usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
-interface IAuthProvider {
+import React, { useEffect, useState } from "react";
+import { createContext } from "vm";
+
+interface AuthProviderProps {
   children: React.ReactNode;
 }
-const AuthProvider = (props: IAuthProvider) => {
+
+export interface IAuthContext {
+  isAuthenticated: boolean;
+  isInitialized: boolean;
+}
+
+export default function AuthProvider(props: AuthProviderProps) {
   const { children } = props;
   const router = useRouter();
-  const pathname = usePathname();
+  const { user, isAuthenticated } = useAppSelector((state) => state.app);
+  const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
 
   const init = async () => {
-    const route = routes.find((el) => el.href === pathname);
-    const isPrivate = route?.private;
-
-    if (isPrivate) {
-      const res = await dispatch(appActions.getMe());
-      console.log(res);
+    try {
+      setLoading(true);
+      await dispatch(appActions.getMe());
+    } catch (e) {
+      toast(e as string, "error");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    init();
+    if (typeof window !== "undefined") init();
   }, []);
-  return <>{children}</>;
-};
 
-export default AuthProvider;
+  return loading ? <MainLoader /> : children;
+}

@@ -2,16 +2,16 @@
 
 import { Box, Typography } from "@mui/material";
 
-export interface ITaskDashboardProps {
+export interface IProjectDashboardProps {
   data: any;
 }
 
-export default function TaskDashboard(props: ITaskDashboardProps) {
+export default function ProjectDashboard(props: IProjectDashboardProps) {
   const { data } = props;
 
   return (
     <Box>
-      <Typography>To do </Typography>
+      <Typography>Projects </Typography>
       {data.map((el: any, i: number) => (
         <Box key={i}>
           <Typography>{el.title}</Typography>

@@ -1,12 +1,15 @@
 import * as React from "react";
 
-export interface ILogoProps {}
+export interface ILogoProps {
+  className?: string;
+}
 
 export default function Logo(props: ILogoProps) {
+  const { className } = props;
   return (
-    <div>
-      <h6 className="font-bold pointer-events-none">
-        <span className="text-blue-300  mr-1">Ted</span>
+    <div className={className}>
+      <h6 className="font-bold pointer-events-none text-white">
+        <span className="  mr-1">{`Ted's`}</span>
         Reminder
       </h6>
     </div>

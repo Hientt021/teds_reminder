@@ -1,17 +1,10 @@
+import { getValidToken, onLogout } from "@/utils/auth";
 import axios from "axios";
-import {
-  getAccessToken,
-  getValidToken,
-  isTokenExpired,
-  onLogout,
-} from "@/utils/auth";
-import { store } from "@/store";
-import { appActions } from "@/store/features/appSlice";
 
 const request = async (options: any) => {
   const reqOptions = {
     ...options,
-    baseURL: "http://localhost:5000",
+    baseURL: "https://teds-reminder-be.onrender.com",
     headers: { "Content-Type": "application/json" },
   };
   return axios(reqOptions)
@@ -29,6 +22,7 @@ axios.interceptors.request.use(
 
     if (isPrivate) {
       const token = await getValidToken();
+      if (!token) onLogout();
       config.headers.Authorization = "Bearer " + token;
     }
     return config;

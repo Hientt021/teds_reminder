@@ -1,6 +1,6 @@
 "use client";
-import AddNewTask from "@/components/task/AddNewTask";
-import TaskDashboard from "./components/TaskDashboard";
+import AddNewProject from "@/app/(private)/projects/components/AddNewProject";
+import TaskDashboard from "./components/ProjectDashboard";
 import { useEffect, useState } from "react";
 import api from "@/api";
 
@@ -13,12 +13,10 @@ export default function ToDo(props: IToDoProps) {
 
     if (res) setData(data);
   };
-  useEffect(() => {
-    getTasks();
-  }, []);
+  useEffect(() => {}, []);
   return (
     <div>
-      <AddNewTask />
+      <AddNewProject />
       {!!data.length && <TaskDashboard data={data} />}
     </div>
   );

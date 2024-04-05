@@ -3,7 +3,8 @@ export enum ROUTES {
   REGISTER = "/register",
   DASHBOARD = "/dashboard",
   CALENDAR = "/calendar",
-  TASK = "/task",
+  ORGANIZATIONS = "/organizations",
+  PROJECTS = "/projects",
 }
 export const routes = [
   {
@@ -23,7 +24,11 @@ export const routes = [
     private: true,
   },
   {
-    href: ROUTES.TASK,
+    href: ROUTES.ORGANIZATIONS,
+    private: true,
+  },
+  {
+    href: ROUTES.PROJECTS,
     private: true,
   },
 ];

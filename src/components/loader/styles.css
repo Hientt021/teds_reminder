@@ -1,0 +1,32 @@
+
+
+:root {
+  /*start + (edge / 2) */
+  --center: 100
+}
+
+.spin-around{
+  animation: spin-around 3s ease infinite alternate
+}
+
+.move-in{
+  animation: move-in 3s ease infinite alternate
+}
+
+@keyframes spin-around {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* Move all the dots toward the center */
+@keyframes move-in {
+  to {
+    cy: var(--center);
+    cx: var(--center);
+  }
+}
+
+
+
+

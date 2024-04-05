@@ -7,11 +7,19 @@ import Dropdown from "../dropdown/Dropdown";
 import { useAppSelector } from "@/store";
 import { Box, Stack, Typography } from "@mui/material";
 import { onLogout } from "@/utils/auth";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import DefaultAvatar from "../avatar/DefaultAvatar";
 export interface IUserDropdownProps {}
 
 export default function UserDropdown(props: IUserDropdownProps) {
   const user = useAppSelector((state) => state.app.user);
   const userOptions = [
+    {
+      label: "Profile",
+      icon: <PersonIcon />,
+      value: "profile",
+      onClick: () => {},
+    },
     {
       label: "Setting",
       icon: <SettingsIcon />,
@@ -34,7 +42,7 @@ export default function UserDropdown(props: IUserDropdownProps) {
   return (
     <Dropdown
       header={
-        <Box px={2} mb={3}>
+        <Box px={2} pt={1} pb={2}>
           {user && (
             <Stack className="items-center">
               <Typography mb={0.5}>{user.userName}</Typography>
@@ -43,17 +51,11 @@ export default function UserDropdown(props: IUserDropdownProps) {
           )}
         </Box>
       }
-      label={
-        user && (
-          <Stack>
-            <Typography>{user.userName}</Typography>
-            <Typography>{user.email}</Typography>
-          </Stack>
-        )
-      }
-      icon={<PersonIcon />}
+      icon={<DefaultAvatar />}
       options={userOptions}
       onValueChange={onValueChange}
+      disableRipple
+      sx={{ minWidth: 200 }}
     />
   );
 }
