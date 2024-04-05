@@ -1,9 +1,8 @@
 "use client";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
-import BasicModal from "../../../../components/modal/BasicModal";
-import { useState } from "react";
 import { useFormik } from "formik";
-import { signUpSchema } from "@/app/(auth)/register/schema";
+import { useState } from "react";
+import BasicModal from "../../../../components/modal/BasicModal";
 
 export interface IAddNewTaskProps {}
 
