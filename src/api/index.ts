@@ -1,5 +1,6 @@
 "use client";
-import axios, { Method } from "axios";
+
+import { Method } from "axios";
 import endpoints from "./endpoints";
 import request from "./request";
 
@@ -26,12 +27,24 @@ const gen = (params: string) => {
   }
 
   return async (payload: any, options: any) => {
-    return request({
+    const reqOptions = {
       ...options,
+      baseURL: "https://teds-reminder-be.onrender.com",
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
       method,
       url,
       data: JSON.stringify(payload),
-    });
+    };
+    return request(reqOptions)
+      .then((res) => {
+        // console.log(res.data.data);
+        return Promise.resolve(res.data.data);
+      })
+      .catch((error) => {
+        // console.log(error.response.data);
+        return Promise.reject(error.response.data.message);
+      });
   };
 };
 

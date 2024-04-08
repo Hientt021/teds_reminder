@@ -1,4 +1,3 @@
-"use strict";
 import type { Metadata } from "next";
 import { Inter, Roboto } from "next/font/google";
 import "./globals.css";

@@ -1,29 +1,19 @@
-import { getValidToken, onLogout } from "@/utils/auth";
+import { store } from "@/store";
+import { appActions } from "@/store/features/appSlice";
+import { getAccessToken, getValidToken, onLogout } from "@/utils/auth";
 import axios from "axios";
 
-const request = async (options: any) => {
-  const reqOptions = {
-    ...options,
-    baseURL: "https://teds-reminder-be.onrender.com",
-    headers: { "Content-Type": "application/json" },
-  };
-  return axios(reqOptions)
-    .then((res) => {
-      return Promise.resolve(res.data.data);
-    })
-    .catch((error) => {
-      return Promise.reject(error.response.data.message);
-    });
-};
+const request = axios;
+let refreshTokenPromise: any = null;
 
-axios.interceptors.request.use(
+request.interceptors.request.use(
   async (config) => {
-    const isPrivate = !config.url?.includes("/auth");
+    const endPoint = config.url?.split("/api/v1")[1] || "";
+    const isPrivate = !endPoint.startsWith("/auth");
 
     if (isPrivate) {
-      const token = await getValidToken();
-      if (!token) onLogout();
-      config.headers.Authorization = "Bearer " + token;
+      const token = getAccessToken();
+      if (token) config.headers["Authorization"] = "Bearer " + token;
     }
     return config;
   },
@@ -32,11 +22,32 @@ axios.interceptors.request.use(
   }
 );
 
-axios.interceptors.response.use(
-  function (response) {
+request.interceptors.response.use(
+  async function (response) {
     return response;
   },
-  function (error) {
+  async function (error) {
+    const status = error.response.status;
+    const originalRequest = error.config;
+    if (originalRequest && status === 403) {
+      if (!refreshTokenPromise) {
+        refreshTokenPromise = store
+          .dispatch(appActions.handleRefreshToken())
+          .then((data) => {
+            refreshTokenPromise = null;
+            const newToken = (data.payload as any).accessToken;
+            return newToken;
+          });
+      }
+
+      return refreshTokenPromise
+        .then((newToken: string) => {
+          error.config.headers["Authorization"] = "Bearer " + newToken;
+          return axios.request(error.config);
+        })
+        .catch(() => onLogout());
+    }
+
     return Promise.reject(error);
   }
 );

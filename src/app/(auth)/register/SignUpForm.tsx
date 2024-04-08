@@ -74,7 +74,7 @@ export default function SignUpForm(props: ISignUpFormProps) {
             value={formik.values.password}
             onChange={formik.handleChange}
           />
-          <LoadingButton loading={!loading} variant="outlined" type="submit">
+          <LoadingButton loading={loading} variant="outlined" type="submit">
             Register
           </LoadingButton>
         </Stack>

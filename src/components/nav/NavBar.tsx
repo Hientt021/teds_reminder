@@ -1,9 +1,7 @@
 "use client";
-import { useAppSelector } from "@/store";
-import UserDropdown from "../dropdown/UserDropdown";
-import CardComponent from "../card/CardComponent";
-import { usePathname } from "next/navigation";
 import { Typography } from "@mui/material";
+import { usePathname } from "next/navigation";
+import UserDropdown from "../dropdown/UserDropdown";
 export interface INavBarProps {}
 
 export default function NavBar(props: INavBarProps) {

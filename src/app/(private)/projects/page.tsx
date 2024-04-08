@@ -1,23 +1,13 @@
-"use client";
 import AddNewProject from "@/app/(private)/projects/components/AddNewProject";
-import TaskDashboard from "./components/ProjectDashboard";
-import { useEffect, useState } from "react";
-import api from "@/api";
+import ProjectDashboard from "./components/ProjectDashboard";
 
-export interface IToDoProps {}
+export interface ITProjectsProps {}
 
-export default function ToDo(props: IToDoProps) {
-  const [data, setData] = useState([]);
-  const getTasks = async () => {
-    const res = await api.getTasks();
-
-    if (res) setData(data);
-  };
-  useEffect(() => {}, []);
+export default function Projects(props: ITProjectsProps) {
   return (
     <div>
       <AddNewProject />
-      {!!data.length && <TaskDashboard data={data} />}
+      <ProjectDashboard />
     </div>
   );
 }

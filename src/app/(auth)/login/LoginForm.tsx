@@ -28,9 +28,7 @@ export interface IUser {
 }
 
 export interface ILoginRes {
-  user: IUser;
   accessToken: string;
-  refreshToken: string;
 }
 
 export default function LoginForm(props: ILoginFormProps) {
