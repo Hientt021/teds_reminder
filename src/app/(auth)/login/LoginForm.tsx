@@ -19,14 +19,6 @@ export interface ILoginProps {
   password: string;
 }
 
-export interface IUser {
-  email: string;
-  userName: string;
-  created_at: string;
-  updated_at: string;
-  _id: string;
-}
-
 export interface ILoginRes {
   accessToken: string;
 }

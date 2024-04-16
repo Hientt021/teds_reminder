@@ -14,9 +14,10 @@ export default function PrivateLayout({
         className="flex"
       >
         <SideBar />
-        <div className="flex flex-col flex-1 p-5">
+        <div className="flex-1 p-7" style={{ overflow: "hidden" }}>
           <NavBar />
-          <div className="">{children}</div>
+
+          {children}
         </div>
       </main>
     </AuthProvider>

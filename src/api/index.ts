@@ -3,6 +3,7 @@
 import { Method } from "axios";
 import endpoints from "./endpoints";
 import request from "./request";
+import { IError, IResponse } from "@/type";
 
 export interface IApiResponse<T = {}> {
   success: boolean;
@@ -27,23 +28,34 @@ const gen = (params: string) => {
   }
 
   return async (payload: any, options: any) => {
+    const urlArr = url.split("/");
+
+    const newArr = urlArr.map((str) => {
+      if (payload && Object.keys(payload).some((key) => ":" + key === str)) {
+        const curKey = str.slice(1);
+        const value = payload[curKey];
+        delete payload[curKey];
+        return value;
+      } else {
+        return str;
+      }
+    });
+
     const reqOptions = {
       ...options,
       baseURL: "https://teds-reminder-be.onrender.com",
       headers: { "Content-Type": "application/json" },
       withCredentials: true,
       method,
-      url,
+      url: newArr.join("/"),
       data: JSON.stringify(payload),
     };
     return request(reqOptions)
       .then((res) => {
-        // console.log(res.data.data);
-        return Promise.resolve(res.data.data);
+        return Promise.resolve(res.data);
       })
       .catch((error) => {
-        // console.log(error.response.data);
-        return Promise.reject(error.response.data.message);
+        return Promise.reject(error.response as IError);
       });
   };
 };

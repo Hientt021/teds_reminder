@@ -1,13 +1,12 @@
-import AddNewProject from "@/app/(private)/projects/components/AddNewProject";
+import PageContainer from "@/components/card/PageContainer";
 import ProjectDashboard from "./components/ProjectDashboard";
 
 export interface ITProjectsProps {}
 
 export default function Projects(props: ITProjectsProps) {
   return (
-    <div>
-      <AddNewProject />
+    <PageContainer title="Projects">
       <ProjectDashboard />
-    </div>
+    </PageContainer>
   );
 }

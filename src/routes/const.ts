@@ -5,6 +5,8 @@ export enum ROUTES {
   CALENDAR = "/calendar",
   ORGANIZATIONS = "/organizations",
   PROJECTS = "/projects",
+  PROFILE = "/profile",
+  SETTINGS = "/settings",
 }
 export const routes = [
   {

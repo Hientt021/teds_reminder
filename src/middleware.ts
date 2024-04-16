@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
-
+import { cookies } from "next/headers";
 export function middleware(request: NextRequest) {
-  console.log(request);
+  const cookieStore = cookies();
+  const refreshToken = cookieStore.getAll();
   return NextResponse.next();
   const currentUser = request.cookies.get("currentUser")?.value;
 

@@ -1,7 +1,8 @@
 import api from "@/api";
-import { ILoginRes, IUser } from "@/app/(auth)/login/LoginForm";
+import { ILoginRes } from "@/app/(auth)/login/LoginForm";
 import { IRegisterRes } from "@/app/(auth)/register/SignUpForm";
-import { IMessageType } from "@/hook/toast/useToast";
+
+import { IMessageType, IResponse, IUser } from "@/type";
 import { setToken } from "@/utils/auth";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { NextRequest } from "next/server";
@@ -14,19 +15,23 @@ interface IAppSlice {
 }
 
 interface IToastMessage {
-  show: boolean;
   message?: string;
   type: IMessageType;
 }
 
-const initToast = {
-  show: false,
+export const initToast = {
   message: "",
   type: "info" as IMessageType,
 };
 
+const initUser = {
+  email: "",
+  userName: "",
+  id: "",
+};
+
 const initialState: IAppSlice = {
-  user: undefined,
+  user: initUser,
   accessToken: undefined,
   isAuthenticated: false,
   toast: initToast,
@@ -35,9 +40,8 @@ const initialState: IAppSlice = {
 const emailLogin = createAsyncThunk(
   "app/emailLogin",
   async (query: { email: string; password: string }, { rejectWithValue }) => {
-    const res = await api.login<ILoginRes>(query);
-    NextRequest;
-    return res;
+    const res = await api.login<IResponse<ILoginRes>>(query);
+    return res.data;
   }
 );
 
@@ -47,17 +51,17 @@ const register = createAsyncThunk(
     query: { email: string; password: string; userName: string },
     { rejectWithValue }
   ) => {
-    const res = await api.register<IRegisterRes>(query);
+    const res = await api.register<IResponse<IRegisterRes>>(query);
 
-    return res;
+    return res.data;
   }
 );
 
 const handleRefreshToken = createAsyncThunk(
   "app/handleRefreshToken",
   async () => {
-    const res = await api.refresh<ILoginRes>();
-    return res;
+    const res = await api.refresh<IResponse<ILoginRes>>();
+    return res.data;
   }
 );
 
@@ -68,8 +72,8 @@ const logout = createAsyncThunk("app/logout", async () => {
   return res;
 });
 const getMe = createAsyncThunk("app/getMe", async () => {
-  const res = await api.getMe<IUser>();
-  return res;
+  const res = await api.getMe<IResponse<IUser>>();
+  return res.data;
 });
 
 export const appSlice = createSlice({
@@ -77,10 +81,7 @@ export const appSlice = createSlice({
   initialState,
   reducers: {
     showToast: (state, action) => {
-      state.toast = { ...action.payload, show: true };
-    },
-    hideToast: (state) => {
-      state.toast = initToast;
+      state.toast = action.payload;
     },
   },
   extraReducers(builder) {
