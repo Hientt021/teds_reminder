@@ -4,6 +4,7 @@ const endpoints = {
   refresh: "GET /api/v1/auth/refresh",
   logout: "GET /api/v1/auth/logout",
   getMe: "GET /api/v1/user/me",
+  updateMe: "PUT /api/v1/user/me",
 
   createProject: "POST /api/v1/project",
   getProjects: "GET /api/v1/project",

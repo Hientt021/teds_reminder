@@ -7,4 +7,5 @@ export const createProjectSchema = object({
 export const updateProfileSchema = object({
   userName: string().required("Required"),
   email: string().required("Required"),
+  avatar: object(),
 });

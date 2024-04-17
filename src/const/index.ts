@@ -1,3 +1,5 @@
+export const BASE_URL = "https://teds-reminder-be.onrender.com";
+// export const BASE_URL = "http://localhost:5000";
 export const priorityList = [
   {
     value: "urgent",

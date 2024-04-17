@@ -76,6 +76,15 @@ const getMe = createAsyncThunk("app/getMe", async () => {
   return res.data;
 });
 
+const updateMe = createAsyncThunk(
+  "app/updateMe",
+  async (query: any, { rejectWithValue }) => {
+    console.log(query);
+    const res = await api.updateMe<IResponse<IUser>>(query);
+    return res.data;
+  }
+);
+
 export const appSlice = createSlice({
   name: "app",
   initialState,
@@ -98,6 +107,9 @@ export const appSlice = createSlice({
     builder.addCase(getMe.fulfilled, (state, action) => {
       return { ...state, user: action.payload, isAuthenticated: true };
     });
+    builder.addCase(updateMe.fulfilled, (state, action) => {
+      return { ...state, user: action.payload };
+    });
     builder.addCase(logout.fulfilled, (state, action) => {
       return initialState;
     });
@@ -110,6 +122,7 @@ export const appActions = {
   handleRefreshToken,
   logout,
   getMe,
+  updateMe,
   register,
 };
 export default appSlice.reducer;

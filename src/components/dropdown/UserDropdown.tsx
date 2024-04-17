@@ -54,7 +54,7 @@ export default function UserDropdown(props: IUserDropdownProps) {
       //     )}
       //   </Box>
       // }
-      icon={<Avatar />}
+      icon={<Avatar src={user?.avatar} />}
       options={userOptions}
       onValueChange={onValueChange}
       disableRipple

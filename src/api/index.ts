@@ -4,6 +4,7 @@ import { Method } from "axios";
 import endpoints from "./endpoints";
 import request from "./request";
 import { IError, IResponse } from "@/type";
+import { BASE_URL } from "@/const";
 
 export interface IApiResponse<T = {}> {
   success: boolean;
@@ -43,13 +44,14 @@ const gen = (params: string) => {
 
     const reqOptions = {
       ...options,
-      baseURL: "https://teds-reminder-be.onrender.com",
+      baseURL: BASE_URL,
       headers: { "Content-Type": "application/json" },
       withCredentials: true,
       method,
       url: newArr.join("/"),
       data: JSON.stringify(payload),
     };
+    console.log(payload);
     return request(reqOptions)
       .then((res) => {
         return Promise.resolve(res.data);
